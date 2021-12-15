@@ -1,0 +1,34 @@
+[
+  {
+    "ParameterKey": "BuildkiteQueue",
+    "ParameterValue": "dev"
+  },
+  {
+    "ParameterKey": "BuildkiteAgentTokenParameterStorePath",
+    "ParameterValue": "/buildkite/agent-token"
+  },
+  {
+    "ParameterKey": "ManagedPolicyARN",
+    "ParameterValue": "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  },
+  {
+    "ParameterKey": "KeyName",
+    "ParameterValue": "buildkite-dev"
+  },
+  {
+    "ParameterKey": "AssociatePublicIpAddress",
+    "ParameterValue": "true"
+  },
+  {
+    "ParameterKey": "ECRAccessPolicy",
+    "ParameterValue": "poweruser"
+  },
+  {
+    "ParameterKey": "ScaleInIdlePeriod",
+    "ParameterValue": "3600"
+  },
+  {
+    "ParameterKey": "OnDemandPercentage",
+    "ParameterValue": "50"
+  }
+]

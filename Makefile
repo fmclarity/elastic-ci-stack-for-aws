@@ -3,6 +3,8 @@
 VERSION = $(shell git describe --tags --candidates=1)
 SHELL = /bin/bash -o pipefail
 
+include custom_resources/make/buildkite.mk
+
 PACKER_VERSION ?= 1.6.2
 PACKER_LINUX_FILES = $(exec find packer/linux)
 PACKER_WINDOWS_FILES = $(exec find packer/windows)
@@ -63,9 +65,9 @@ build/aws-stack.yml:
 # -----------------------------------------
 # AMI creation with Packer
 
-packer: packer-linux-amd64.output packer-linux-arm64.output packer-windows-amd64.output
+packer: packer-linux-amd64.output #packer-linux-arm64.output packer-windows-amd64.output
 
-build/mappings.yml: build/linux-amd64-ami.txt build/linux-arm64-ami.txt build/windows-amd64-ami.txt
+build/mappings.yml: build/linux-amd64-ami.txt #build/linux-arm64-ami.txt build/windows-amd64-ami.txt
 	mkdir -p build
 	printf "Mappings:\n  AWSRegion2AMI:\n    %q : { linuxamd64: %q, linuxarm64: %q, windows: %q }\n" \
 		"$(AWS_REGION)" $$(cat build/linux-amd64-ami.txt) $$(cat build/linux-arm64-ami.txt) $$(cat build/windows-amd64-ami.txt) > $@
@@ -151,7 +153,7 @@ create-stack: build/aws-stack.yml env-STACK_NAME
 		--template-body "file://$(PWD)/build/aws-stack.yml" \
 		--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
 		--parameters "$$(cat config.json)" \
-		"$(role_arn)"
+		$(role_arn)
 
 update-stack: build/aws-stack.yml env-STACK_NAME
 	aws cloudformation update-stack \
@@ -160,7 +162,7 @@ update-stack: build/aws-stack.yml env-STACK_NAME
 		--template-body "file://$(PWD)/build/aws-stack.yml" \
 		--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
 		--parameters "$$(cat config.json)" \
-		"$(role_arn)"
+		$(role_arn)
 
 # -----------------------------------------
 # Other
