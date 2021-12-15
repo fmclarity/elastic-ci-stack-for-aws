@@ -3,7 +3,7 @@
 VERSION = $(shell git describe --tags --candidates=1)
 SHELL = /bin/bash -o pipefail
 
-include ./custom_resources/make/buildkite.mk
+include custom_resources/make/buildkite.mk
 
 PACKER_VERSION ?= 1.6.2
 PACKER_LINUX_FILES = $(exec find packer/linux)

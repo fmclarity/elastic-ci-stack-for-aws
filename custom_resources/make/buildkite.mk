@@ -23,3 +23,18 @@ put-role-policy:
 		--role-name buildkite-queue-$(queue)-Role \
 		--policy-name CloudFrontPolicy \
 		--policy-document file://custom_resources/iam/cloudfront_policies.json
+
+upload-private-key-buildkite:
+	secret_bucket=$$(aws --region $(AWS_REGION) cloudformation describe-stack-resources \
+									--stack-name $(STACK_NAME) --logical-resource-id ManagedSecretsBucket \
+									--query "StackResources[*].PhysicalResourceId" --output text); \
+	aws s3 cp --acl private --sse AES256 $(sshkey) s3://$$secret_bucket/private_ssh_key
+
+
+## githubtoken can be retrieved from AWS Secret Manager '/github/api-token/ssh-gpg-management'
+upload-public-key-github:
+	echo "uploading ssh public key to github apt-devops-bk user."
+	pubkey=$$(cat $(sshkey).pub); \
+  curl -v -H "Content-Type: application/json" -H "Authorization: token $(githubtoken)" \
+		--data "{\"title\":\"buildkite-${queue}\",\"key\":\"$$(cat $$pubkey)\"}" \
+		https://api.github.com/user/keys
