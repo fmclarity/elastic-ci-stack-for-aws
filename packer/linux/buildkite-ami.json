@@ -82,6 +82,10 @@
     },
     {
       "type": "shell",
+      "script": "scripts/install-terraform.sh"
+    },
+    {
+      "type": "shell",
       "inline": [
         "rm /home/ec2-user/.ssh/authorized_keys"
       ]
