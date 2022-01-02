@@ -21,8 +21,8 @@ create-ssh-key:
 put-role-policy:
 	aws --region ${AWS_REGION} iam put-role-policy \
 		--role-name buildkite-queue-$(queue)-Role \
-		--policy-name CloudFrontPolicy \
-		--policy-document file://custom_resources/iam/cloudfront_policies.json
+		--policy-name BuildkiteCustomPolicy \
+		--policy-document file://custom_resources/iam/buildkite_custom_policies.json
 
 upload-private-key-buildkite:
 	secret_bucket=$$(aws --region $(AWS_REGION) cloudformation describe-stack-resources \
