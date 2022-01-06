@@ -225,6 +225,11 @@ Parameters:
     Description: Optional - Id of an existing VPC to launch instances into. Leave blank to have a new VPC created
     Default: ""
 
+  VpcCidrBlock:
+    Type: String
+    Description: Optional - Cidr block of the new VPC. Ignored if setting VpcId.
+    Default: "172.0.0.0/16"
+
   Subnets:
     Type: CommaDelimitedList
     Description: Optional - Comma separated list of two existing VPC subnet ids where EC2 instances will run. Required if setting VpcId.
@@ -607,7 +612,7 @@ Resources:
     Type: AWS::EC2::VPC
     Condition: CreateVpcResources
     Properties:
-      CidrBlock: 10.0.0.0/16
+      CidrBlock: !Ref VpcCidrBlock
       InstanceTenancy: default
       Tags:
         - Key: Name
@@ -639,7 +644,7 @@ Resources:
           - "UseSpecifiedAvailabilityZones"
           - !Select [ 0, !Ref AvailabilityZones ]
           - !Select [ 0, !GetAZs '' ]
-      CidrBlock: 10.0.1.0/24
+      CidrBlock: !Select [1, !Cidr [ !Ref VpcCidrBlock, 2, 8 ]]
       VpcId: !Ref Vpc
       Tags:
         - Key: Name
@@ -656,7 +661,7 @@ Resources:
           - "UseSpecifiedAvailabilityZones"
           - !Select [ 1, !Ref AvailabilityZones ]
           - !Select [ 1, !GetAZs '' ]
-      CidrBlock: 10.0.2.0/24
+      CidrBlock: !Select [2, !Cidr [ !Ref VpcCidrBlock, 2, 8 ]]
       VpcId: !Ref Vpc
       Tags:
         - Key: Name
