@@ -644,7 +644,7 @@ Resources:
           - "UseSpecifiedAvailabilityZones"
           - !Select [ 0, !Ref AvailabilityZones ]
           - !Select [ 0, !GetAZs '' ]
-      CidrBlock: !Select [1, !Cidr [ !Ref VpcCidrBlock, 2, 8 ]]
+      CidrBlock: !Select [0, !Cidr [ !Ref VpcCidrBlock, 2, 8 ]]
       VpcId: !Ref Vpc
       Tags:
         - Key: Name
@@ -661,7 +661,7 @@ Resources:
           - "UseSpecifiedAvailabilityZones"
           - !Select [ 1, !Ref AvailabilityZones ]
           - !Select [ 1, !GetAZs '' ]
-      CidrBlock: !Select [2, !Cidr [ !Ref VpcCidrBlock, 2, 8 ]]
+      CidrBlock: !Select [1, !Cidr [ !Ref VpcCidrBlock, 2, 8 ]]
       VpcId: !Ref Vpc
       Tags:
         - Key: Name
